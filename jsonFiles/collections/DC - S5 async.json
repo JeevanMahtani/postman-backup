@@ -1,1 +1,833 @@
-{"collection":{"info":{"_postman_id":"6e16b53e-43e4-43b9-b706-9ccec34a7241","name":"DC - S5 async","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},"item":[{"name":"loginCorp","event":[{"listen":"prerequest","script":{"id":"cb497d03-339e-472f-963d-6f760ca22cad","exec":["const moment = require('moment');\r","pm.environment.set(\"dateToday\", moment().format(\"YYYY-MM-DD\").toString());"],"type":"text/javascript"}},{"listen":"test","script":{"id":"d91e9827-bf79-43fa-9639-46a09d1cb2a8","exec":["pm.test('set corp token', function(){\r","    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r","    pm.environment.set(\"corpToken\", token);\r","})\r"," "],"type":"text/javascript"}}],"id":"f702c263-6343-4803-b6cb-e233f56be1cd","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/login","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["login"]}},"response":[{"id":"338012fb-f430-44f7-ad87-3267770bc522","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/login","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["login"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"bypass(submit to issuing bank)","event":[{"listen":"prerequest","script":{"id":"5ca028f2-dd8c-4ee4-a115-914f1cefdfe1","exec":[""],"type":"text/javascript"}},{"listen":"test","script":{"id":"67822176-0a1d-4b06-b043-2dd6921df01b","exec":["pm.test('get draft id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"draftDcRef\",data.id);\r","    console.log(data.id);\r","})"],"type":"text/javascript"}}],"id":"ccb122b6-3eaf-4da5-abb8-7b96b60c19d8","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"applicationDate\": \"{{dateToday}}\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2022-04-30\",\r\n      \"placePresentation\": \"test\",\r\n      \"periodPresentation\": 123,\r\n      \"typeOfPresentation\": \"shipment\",\r\n      \"amount\": \"14800.00 USD\",\r\n      \"additionalAmountsCovered\": null,\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"123\",\r\n      \"placeOfTakingInCharge\": \"123\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"DEFERRED_PAYMENT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"test\",\r\n            \"drawee\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank C Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank C\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"SIGHT\",\r\n          \"availableCreditsProps\": {}\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": null,\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": null,\r\n      \"partialShipment\": null,\r\n      \"transShipment\": null,\r\n      \"portLoading\": \"123\",\r\n      \"portDischarge\": \"123\",\r\n      \"lastShipmentDate\": \"2021-12-25\",\r\n      \"goods\": \"test\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"test\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": null,\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_ESSDOCS\",\r\n          \"subtype\": null,\r\n          \"description\": \"test\"\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [\r\n        {\r\n          \"documentType\": \"test1\",\r\n          \"description\": \"test1 desc\"\r\n        },\r\n        {\r\n          \"documentType\": \"test2\",\r\n          \"description\": \"test2 desc\"\r\n        }\r\n      ],\r\n      \"additionalConditions\": \"Presentation to be made through Contour application under eUCP latest version\",\r\n      \"detailsCharges\": \"All charges outside country of issue for account of beneficiary / exporter\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": null,\r\n        \"availableWithAnyBank\": true,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Corp A Address\",\r\n        \"beneficiary\": \"Corp B Address\",\r\n        \"issuer\": \"Bank A Address\",\r\n        \"advisingBank\": \"Bank B Address\",\r\n        \"confirmingBank\": \"Bank C Address\",\r\n        \"availableWithBank\": null,\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1622714310676\r\n      }\r\n    },\r\n    \"waiver\": false\r\n  },\r\n  \"draftComment\": null\r\n}","options":{"raw":{"language":"json"}}},"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/locapp/apply/bypass","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","apply","bypass"]}},"response":[{"id":"94c8d163-820f-470c-9ccd-d2d3460b641b","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"applicationDate\": \"{{dateToday}}\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2022-04-30\",\r\n      \"placePresentation\": \"test\",\r\n      \"periodPresentation\": 123,\r\n      \"typeOfPresentation\": \"shipment\",\r\n      \"amount\": \"14800.00 USD\",\r\n      \"additionalAmountsCovered\": null,\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"123\",\r\n      \"placeOfTakingInCharge\": \"123\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"DEFERRED_PAYMENT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"test\",\r\n            \"drawee\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank C Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank C\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"SIGHT\",\r\n          \"availableCreditsProps\": {}\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": null,\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": null,\r\n      \"partialShipment\": null,\r\n      \"transShipment\": null,\r\n      \"portLoading\": \"123\",\r\n      \"portDischarge\": \"123\",\r\n      \"lastShipmentDate\": \"2021-12-25\",\r\n      \"goods\": \"test\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"test\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": null,\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_ESSDOCS\",\r\n          \"subtype\": null,\r\n          \"description\": \"test\"\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [\r\n        {\r\n          \"documentType\": \"test1\",\r\n          \"description\": \"test1 desc\"\r\n        },\r\n        {\r\n          \"documentType\": \"test2\",\r\n          \"description\": \"test2 desc\"\r\n        }\r\n      ],\r\n      \"additionalConditions\": \"Presentation to be made through Contour application under eUCP latest version\",\r\n      \"detailsCharges\": \"All charges outside country of issue for account of beneficiary / exporter\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": null,\r\n        \"availableWithAnyBank\": true,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Corp A Address\",\r\n        \"beneficiary\": \"Corp B Address\",\r\n        \"issuer\": \"Bank A Address\",\r\n        \"advisingBank\": \"Bank B Address\",\r\n        \"confirmingBank\": \"Bank C Address\",\r\n        \"availableWithBank\": null,\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1622714310676\r\n      }\r\n    },\r\n    \"waiver\": false\r\n  },\r\n  \"draftComment\": null\r\n}","options":{"raw":{"language":"json"}}},"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/locapp/apply/bypass","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","apply","bypass"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"execute","id":"668df2e9-c9a8-456f-bea4-c4296c2153d4","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}","type":"text"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","draft","execute","{{draftDcRef}}"]}},"response":[{"id":"bebfce30-b6d5-46e3-baf9-9204465f1002","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}","type":"text"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","draft","execute","{{draftDcRef}}"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"getDCId","event":[{"listen":"test","script":{"id":"54fab145-ce78-4c95-9aea-18f80cba01b8","exec":["pm.test('get dc id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"issBankRef\",data.content[0].locApp.ref);\r","    console.log(data.content[0].locApp.ref);\r","})"],"type":"text/javascript"}}],"id":"3c773444-e4d7-4066-8c65-d7dcdf8fc203","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_IMPORT"},{"key":"keyword","value":""}]}},"response":[{"id":"e96ee32d-4d7f-4c8d-910d-a90a65c441a7","name":"Response_200","originalRequest":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_IMPORT"},{"key":"keyword","value":""}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"loginIssuer","event":[{"listen":"test","script":{"id":"9f6863a5-bba0-4956-a919-d8e8b423b7f6","exec":["pm.test('set iss token', function(){\r","    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r","    pm.environment.set(\"issToken\", token);\r","})"],"type":"text/javascript"}}],"id":"1a30a3dd-d736-4ccf-8ba8-2c0ca0f055f1","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/login","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["login"]}},"response":[{"id":"42c6182e-c1f9-447c-bf26-b4516a6d7d1c","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/login","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["login"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"issueDC","event":[{"listen":"test","script":{"id":"999e2f60-2568-4b76-a763-97bfc8ad2e8d","exec":["pm.test('get dc id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"confBankRef\",data.id);\r","})"],"type":"text/javascript"}}],"id":"ceefbf70-daf1-424e-b53e-62223ce5a011","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{issToken}}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n   \"args\":{\r\n      \"lcReference\":\"5443-DontUse\",\r\n      \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n      \"clause\":{\r\n         \"content\":\"Additional conditions (issuing bank input, optional)\"\r\n      },\r\n      \"timezoneId\":\"+0800\"\r\n   },\r\n   \"draftComment\":null\r\n}"},"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/api/v1/locapp/issuer/approve/{{issBankRef}}","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","issuer","approve","{{issBankRef}}"]}},"response":[{"id":"b6f30296-2950-45f8-9876-7865dc6ed1f2","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{issToken}}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n   \"args\":{\r\n      \"lcReference\":\"5443-DontUse\",\r\n      \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n      \"clause\":{\r\n         \"content\":\"Additional conditions (issuing bank input, optional)\"\r\n      },\r\n      \"timezoneId\":\"+0800\"\r\n   },\r\n   \"draftComment\":null\r\n}"},"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/api/v1/locapp/issuer/approve/{{issBankRef}}","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","issuer","approve","{{issBankRef}}"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"getDraftIdForConf","event":[{"listen":"test","script":{"id":"797e385d-9a35-4001-9053-05c09a4c43dd","exec":["pm.test('get dc id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"confBankRef\",data.content[0].locApp.ref);\r","    console.log(data.content[0].locApp.ref);\r","})"],"type":"text/javascript"}}],"id":"bdb691a1-89d4-4e3a-8628-59f2148cdf6d","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{issToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_IMPORT"},{"key":"keyword","value":""}]}},"response":[{"id":"9b7125f4-897c-4a72-ac40-bc4ea6bc12d1","name":"Response_200","originalRequest":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{issToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}banka.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=","host":["{{https}}banka","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_IMPORT"},{"key":"keyword","value":""}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"loginConf","event":[{"listen":"test","script":{"id":"1a23e297-893b-4a13-b1f2-c7650387e50a","exec":["pm.test('set conf token', function(){\r","    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r","    pm.environment.set(\"confToken\", token);\r","})"],"type":"text/javascript"}}],"id":"deb62f14-a6d9-42b7-8f66-6f02f2557602","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/login","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["login"]}},"response":[{"id":"adb608f0-62a4-44f4-8c88-c0c2204fa746","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/login","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["login"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"adviseWithConfirmDC","event":[{"listen":"test","script":{"id":"4ccefe85-d454-4046-83c4-43a04c904ea4","exec":["pm.test('get dc id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"nomBankRef\",data.id);\r","})"],"type":"text/javascript"}}],"id":"e5f8dddf-7fea-46ec-9f38-dc98d4016f97","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{confToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"},"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/api/v1/locapp/requestedConfirmationParty/advise/{{confBankRef}}/withConfirmation","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","requestedConfirmationParty","advise","{{confBankRef}}","withConfirmation"]}},"response":[{"id":"f73754b0-0e2e-41db-b65a-abad7ee893dd","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{confToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"},"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/api/v1/locapp/requestedConfirmationParty/advise/{{confBankRef}}/withConfirmation","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","requestedConfirmationParty","advise","{{confBankRef}}","withConfirmation"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"getDraftIdForAdv","event":[{"listen":"test","script":{"id":"b371a805-3b6b-4922-8d3d-3e7db5894e34","exec":["pm.test('get dc id', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"advBankRef\",data.content[0].locApp.ref);\r","    console.log(data.content[0].locApp.ref);\r","})"],"type":"text/javascript"}}],"id":"a7584368-38cb-4205-b544-8176fc7c66ef","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{confToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_EXPORT"},{"key":"keyword","value":""}]}},"response":[{"id":"a8357217-9325-4863-80ec-7aa4cf3709d5","name":"Response_200","originalRequest":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{confToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}bankc.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=","host":["{{https}}bankc","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_EXPORT"},{"key":"keyword","value":""}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"loginAdv","event":[{"listen":"test","script":{"id":"3be7c2f9-d6ca-46cb-a601-210495f5daf1","exec":["pm.test('set adv token', function(){\r","    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r","    pm.environment.set(\"advToken\", token);\r","})"],"type":"text/javascript"}}],"id":"f02b58ac-a0c1-4237-9ec5-d0112605d941","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}bankb.{{env}}.{{devUrl}}/login","host":["{{https}}bankb","{{env}}","{{devUrl}}"],"path":["login"]}},"response":[{"id":"6d40053a-90c2-4561-a215-d7d632bf8428","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}bankb.{{env}}.{{devUrl}}/login","host":["{{https}}bankb","{{env}}","{{devUrl}}"],"path":["login"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"advisingBankAdvise","id":"4f1aa013-fc31-4068-9aba-03d0fa7b0b27","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{advToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"},"url":{"raw":"{{https}}bankb.{{env}}.{{devUrl}}/api/v1/locapp/advisingBank/approve/{{advBankRef}}(1)","host":["{{https}}bankb","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","advisingBank","approve","{{advBankRef}}(1)"]}},"response":[{"id":"fd738c10-5f34-4ec6-940d-a167d1a81b2a","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{advToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"},"url":{"raw":"{{https}}bankb.{{env}}.{{devUrl}}/api/v1/locapp/advisingBank/approve/{{advBankRef}}(1)","host":["{{https}}bankb","{{env}}","{{devUrl}}"],"path":["api","v1","locapp","advisingBank","approve","{{advBankRef}}(1)"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]}]}}
+{
+  "collection": {
+    "info": {
+      "_postman_id": "6e16b53e-43e4-43b9-b706-9ccec34a7241",
+      "name": "DC - S5 async",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "loginCorp",
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "cb497d03-339e-472f-963d-6f760ca22cad",
+              "exec": [
+                "const moment = require('moment');\r",
+                "pm.environment.set(\"dateToday\", moment().format(\"YYYY-MM-DD\").toString());"
+              ],
+              "type": "text/javascript"
+            }
+          },
+          {
+            "listen": "test",
+            "script": {
+              "id": "d91e9827-bf79-43fa-9639-46a09d1cb2a8",
+              "exec": [
+                "pm.test('set corp token', function(){\r",
+                "    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r",
+                "    pm.environment.set(\"corpToken\", token);\r",
+                "})\r",
+                " "
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "f702c263-6343-4803-b6cb-e233f56be1cd",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}corpa.{{env}}.{{devUrl}}/login",
+            "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+            "path": ["login"]
+          }
+        },
+        "response": [
+          {
+            "id": "338012fb-f430-44f7-ad87-3267770bc522",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}corpa.{{env}}.{{devUrl}}/login",
+                "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+                "path": ["login"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "bypass(submit to issuing bank)",
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "5ca028f2-dd8c-4ee4-a115-914f1cefdfe1",
+              "exec": [""],
+              "type": "text/javascript"
+            }
+          },
+          {
+            "listen": "test",
+            "script": {
+              "id": "67822176-0a1d-4b06-b043-2dd6921df01b",
+              "exec": [
+                "pm.test('get draft id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"draftDcRef\",data.id);\r",
+                "    console.log(data.id);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "ccb122b6-3eaf-4da5-abb8-7b96b60c19d8",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}" },
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"applicationDate\": \"{{dateToday}}\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2022-04-30\",\r\n      \"placePresentation\": \"test\",\r\n      \"periodPresentation\": 123,\r\n      \"typeOfPresentation\": \"shipment\",\r\n      \"amount\": \"14800.00 USD\",\r\n      \"additionalAmountsCovered\": null,\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"123\",\r\n      \"placeOfTakingInCharge\": \"123\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"DEFERRED_PAYMENT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"test\",\r\n            \"drawee\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank C Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank C\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"SIGHT\",\r\n          \"availableCreditsProps\": {}\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": null,\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": null,\r\n      \"partialShipment\": null,\r\n      \"transShipment\": null,\r\n      \"portLoading\": \"123\",\r\n      \"portDischarge\": \"123\",\r\n      \"lastShipmentDate\": \"2021-12-25\",\r\n      \"goods\": \"test\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"test\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": null,\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_ESSDOCS\",\r\n          \"subtype\": null,\r\n          \"description\": \"test\"\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [\r\n        {\r\n          \"documentType\": \"test1\",\r\n          \"description\": \"test1 desc\"\r\n        },\r\n        {\r\n          \"documentType\": \"test2\",\r\n          \"description\": \"test2 desc\"\r\n        }\r\n      ],\r\n      \"additionalConditions\": \"Presentation to be made through Contour application under eUCP latest version\",\r\n      \"detailsCharges\": \"All charges outside country of issue for account of beneficiary / exporter\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": null,\r\n        \"availableWithAnyBank\": true,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Corp A Address\",\r\n        \"beneficiary\": \"Corp B Address\",\r\n        \"issuer\": \"Bank A Address\",\r\n        \"advisingBank\": \"Bank B Address\",\r\n        \"confirmingBank\": \"Bank C Address\",\r\n        \"availableWithBank\": null,\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1622714310676\r\n      }\r\n    },\r\n    \"waiver\": false\r\n  },\r\n  \"draftComment\": null\r\n}",
+            "options": { "raw": { "language": "json" } }
+          },
+          "url": {
+            "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/locapp/apply/bypass",
+            "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "locapp", "apply", "bypass"]
+          }
+        },
+        "response": [
+          {
+            "id": "94c8d163-820f-470c-9ccd-d2d3460b641b",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}" },
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"applicationDate\": \"{{dateToday}}\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2022-04-30\",\r\n      \"placePresentation\": \"test\",\r\n      \"periodPresentation\": 123,\r\n      \"typeOfPresentation\": \"shipment\",\r\n      \"amount\": \"14800.00 USD\",\r\n      \"additionalAmountsCovered\": null,\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"123\",\r\n      \"placeOfTakingInCharge\": \"123\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"DEFERRED_PAYMENT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"test\",\r\n            \"drawee\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank C Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank C\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"test\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"SIGHT\",\r\n          \"availableCreditsProps\": {}\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": null,\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": null,\r\n      \"partialShipment\": null,\r\n      \"transShipment\": null,\r\n      \"portLoading\": \"123\",\r\n      \"portDischarge\": \"123\",\r\n      \"lastShipmentDate\": \"2021-12-25\",\r\n      \"goods\": \"test\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"test\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": null,\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_ESSDOCS\",\r\n          \"subtype\": null,\r\n          \"description\": \"test\"\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [\r\n        {\r\n          \"documentType\": \"test1\",\r\n          \"description\": \"test1 desc\"\r\n        },\r\n        {\r\n          \"documentType\": \"test2\",\r\n          \"description\": \"test2 desc\"\r\n        }\r\n      ],\r\n      \"additionalConditions\": \"Presentation to be made through Contour application under eUCP latest version\",\r\n      \"detailsCharges\": \"All charges outside country of issue for account of beneficiary / exporter\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": null,\r\n        \"availableWithAnyBank\": true,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Corp A Address\",\r\n        \"beneficiary\": \"Corp B Address\",\r\n        \"issuer\": \"Bank A Address\",\r\n        \"advisingBank\": \"Bank B Address\",\r\n        \"confirmingBank\": \"Bank C Address\",\r\n        \"availableWithBank\": null,\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1622714310676\r\n      }\r\n    },\r\n    \"waiver\": false\r\n  },\r\n  \"draftComment\": null\r\n}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/locapp/apply/bypass",
+                "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "locapp", "apply", "bypass"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "execute",
+        "id": "668df2e9-c9a8-456f-bea4-c4296c2153d4",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}", "type": "text" }
+          ],
+          "url": {
+            "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}",
+            "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "draft", "execute", "{{draftDcRef}}"]
+          }
+        },
+        "response": [
+          {
+            "id": "bebfce30-b6d5-46e3-baf9-9204465f1002",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "X-CSRF-TOKEN",
+                  "value": "{{corpToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}",
+                "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "draft", "execute", "{{draftDcRef}}"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "getDCId",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "54fab145-ce78-4c95-9aea-18f80cba01b8",
+              "exec": [
+                "pm.test('get dc id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"issBankRef\",data.content[0].locApp.ref);\r",
+                "    console.log(data.content[0].locApp.ref);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "3c773444-e4d7-4066-8c65-d7dcdf8fc203",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "url": {
+            "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=",
+            "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "loc", "alltypes"],
+            "query": [
+              { "key": "size", "value": "20" },
+              { "key": "page", "value": "1" },
+              { "key": "productAccess", "value": "DC_IMPORT" },
+              { "key": "keyword", "value": "" }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "e96ee32d-4d7f-4c8d-910d-a90a65c441a7",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "GET",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "url": {
+                "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=",
+                "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "loc", "alltypes"],
+                "query": [
+                  { "key": "size", "value": "20" },
+                  { "key": "page", "value": "1" },
+                  { "key": "productAccess", "value": "DC_IMPORT" },
+                  { "key": "keyword", "value": "" }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "loginIssuer",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "9f6863a5-bba0-4956-a919-d8e8b423b7f6",
+              "exec": [
+                "pm.test('set iss token', function(){\r",
+                "    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r",
+                "    pm.environment.set(\"issToken\", token);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "1a30a3dd-d736-4ccf-8ba8-2c0ca0f055f1",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}banka.{{env}}.{{devUrl}}/login",
+            "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+            "path": ["login"]
+          }
+        },
+        "response": [
+          {
+            "id": "42c6182e-c1f9-447c-bf26-b4516a6d7d1c",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}banka.{{env}}.{{devUrl}}/login",
+                "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+                "path": ["login"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "issueDC",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "999e2f60-2568-4b76-a763-97bfc8ad2e8d",
+              "exec": [
+                "pm.test('get dc id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"confBankRef\",data.id);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "ceefbf70-daf1-424e-b53e-62223ce5a011",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{issToken}}" },
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n   \"args\":{\r\n      \"lcReference\":\"5443-DontUse\",\r\n      \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n      \"clause\":{\r\n         \"content\":\"Additional conditions (issuing bank input, optional)\"\r\n      },\r\n      \"timezoneId\":\"+0800\"\r\n   },\r\n   \"draftComment\":null\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}banka.{{env}}.{{devUrl}}/api/v1/locapp/issuer/approve/{{issBankRef}}",
+            "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+            "path": [
+              "api",
+              "v1",
+              "locapp",
+              "issuer",
+              "approve",
+              "{{issBankRef}}"
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "b6f30296-2950-45f8-9876-7865dc6ed1f2",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{issToken}}" },
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n   \"args\":{\r\n      \"lcReference\":\"5443-DontUse\",\r\n      \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n      \"clause\":{\r\n         \"content\":\"Additional conditions (issuing bank input, optional)\"\r\n      },\r\n      \"timezoneId\":\"+0800\"\r\n   },\r\n   \"draftComment\":null\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}banka.{{env}}.{{devUrl}}/api/v1/locapp/issuer/approve/{{issBankRef}}",
+                "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locapp",
+                  "issuer",
+                  "approve",
+                  "{{issBankRef}}"
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "getDraftIdForConf",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "797e385d-9a35-4001-9053-05c09a4c43dd",
+              "exec": [
+                "pm.test('get dc id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"confBankRef\",data.content[0].locApp.ref);\r",
+                "    console.log(data.content[0].locApp.ref);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "bdb691a1-89d4-4e3a-8628-59f2148cdf6d",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{issToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "url": {
+            "raw": "{{https}}banka.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=",
+            "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "loc", "alltypes"],
+            "query": [
+              { "key": "size", "value": "20" },
+              { "key": "page", "value": "1" },
+              { "key": "productAccess", "value": "DC_IMPORT" },
+              { "key": "keyword", "value": "" }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "9b7125f4-897c-4a72-ac40-bc4ea6bc12d1",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "GET",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{issToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "url": {
+                "raw": "{{https}}banka.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_IMPORT&keyword=",
+                "host": ["{{https}}banka", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "loc", "alltypes"],
+                "query": [
+                  { "key": "size", "value": "20" },
+                  { "key": "page", "value": "1" },
+                  { "key": "productAccess", "value": "DC_IMPORT" },
+                  { "key": "keyword", "value": "" }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "loginConf",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "1a23e297-893b-4a13-b1f2-c7650387e50a",
+              "exec": [
+                "pm.test('set conf token', function(){\r",
+                "    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r",
+                "    pm.environment.set(\"confToken\", token);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "deb62f14-a6d9-42b7-8f66-6f02f2557602",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}bankc.{{env}}.{{devUrl}}/login",
+            "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+            "path": ["login"]
+          }
+        },
+        "response": [
+          {
+            "id": "adb608f0-62a4-44f4-8c88-c0c2204fa746",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}bankc.{{env}}.{{devUrl}}/login",
+                "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+                "path": ["login"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "adviseWithConfirmDC",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "4ccefe85-d454-4046-83c4-43a04c904ea4",
+              "exec": [
+                "pm.test('get dc id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"nomBankRef\",data.id);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "e5f8dddf-7fea-46ec-9f38-dc98d4016f97",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{confToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}bankc.{{env}}.{{devUrl}}/api/v1/locapp/requestedConfirmationParty/advise/{{confBankRef}}/withConfirmation",
+            "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+            "path": [
+              "api",
+              "v1",
+              "locapp",
+              "requestedConfirmationParty",
+              "advise",
+              "{{confBankRef}}",
+              "withConfirmation"
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "f73754b0-0e2e-41db-b65a-abad7ee893dd",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{confToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}bankc.{{env}}.{{devUrl}}/api/v1/locapp/requestedConfirmationParty/advise/{{confBankRef}}/withConfirmation",
+                "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locapp",
+                  "requestedConfirmationParty",
+                  "advise",
+                  "{{confBankRef}}",
+                  "withConfirmation"
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "getDraftIdForAdv",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "b371a805-3b6b-4922-8d3d-3e7db5894e34",
+              "exec": [
+                "pm.test('get dc id', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"advBankRef\",data.content[0].locApp.ref);\r",
+                "    console.log(data.content[0].locApp.ref);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "a7584368-38cb-4205-b544-8176fc7c66ef",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{confToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "url": {
+            "raw": "{{https}}bankc.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=",
+            "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "loc", "alltypes"],
+            "query": [
+              { "key": "size", "value": "20" },
+              { "key": "page", "value": "1" },
+              { "key": "productAccess", "value": "DC_EXPORT" },
+              { "key": "keyword", "value": "" }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "a8357217-9325-4863-80ec-7aa4cf3709d5",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "GET",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{confToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "url": {
+                "raw": "{{https}}bankc.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=",
+                "host": ["{{https}}bankc", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "loc", "alltypes"],
+                "query": [
+                  { "key": "size", "value": "20" },
+                  { "key": "page", "value": "1" },
+                  { "key": "productAccess", "value": "DC_EXPORT" },
+                  { "key": "keyword", "value": "" }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "loginAdv",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "3be7c2f9-d6ca-46cb-a601-210495f5daf1",
+              "exec": [
+                "pm.test('set adv token', function(){\r",
+                "    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r",
+                "    pm.environment.set(\"advToken\", token);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "f02b58ac-a0c1-4237-9ec5-d0112605d941",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}bankb.{{env}}.{{devUrl}}/login",
+            "host": ["{{https}}bankb", "{{env}}", "{{devUrl}}"],
+            "path": ["login"]
+          }
+        },
+        "response": [
+          {
+            "id": "6d40053a-90c2-4561-a215-d7d632bf8428",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}bankb.{{env}}.{{devUrl}}/login",
+                "host": ["{{https}}bankb", "{{env}}", "{{devUrl}}"],
+                "path": ["login"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "advisingBankAdvise",
+        "id": "4f1aa013-fc31-4068-9aba-03d0fa7b0b27",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{advToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}bankb.{{env}}.{{devUrl}}/api/v1/locapp/advisingBank/approve/{{advBankRef}}(1)",
+            "host": ["{{https}}bankb", "{{env}}", "{{devUrl}}"],
+            "path": [
+              "api",
+              "v1",
+              "locapp",
+              "advisingBank",
+              "approve",
+              "{{advBankRef}}(1)"
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "fd738c10-5f34-4ec6-940d-a167d1a81b2a",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{advToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"lcReference\": \"123\"\r\n  },\r\n  \"draftComment\": null\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}bankb.{{env}}.{{devUrl}}/api/v1/locapp/advisingBank/approve/{{advBankRef}}(1)",
+                "host": ["{{https}}bankb", "{{env}}", "{{devUrl}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locapp",
+                  "advisingBank",
+                  "approve",
+                  "{{advBankRef}}(1)"
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      }
+    ]
+  }
+}
