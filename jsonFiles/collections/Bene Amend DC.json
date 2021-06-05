@@ -1,1 +1,748 @@
-{"collection":{"info":{"_postman_id":"31694560-0cfb-49e6-b4b0-e019d7dbd7fd","name":"Bene Amend DC","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},"item":[{"name":"loginBene","event":[{"listen":"test","script":{"id":"478929d5-3fe4-45a4-8172-9e0e616cc4b5","exec":["pm.test('set nom token', function(){\r","    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r","    pm.environment.set(\"beneToken\", token);\r","})"],"type":"text/javascript"}}],"id":"cb2a0d86-9e86-4f4d-8f23-5e062c2128c9","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/login","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["login"],"query":[{"key":"","value":"","disabled":true},{"key":"","value":"","disabled":true}]}},"response":[{"id":"bb2d1ab3-857f-4673-9952-14f820ebe5af","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/login","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["login"],"query":[{"key":"","value":"","disabled":true},{"key":"","value":"","disabled":true}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"retrieveDCBeneficiary","event":[{"listen":"test","script":{"id":"39affdba-b2f3-40af-b917-2b7e83557885","exec":["pm.test('get dc uuid', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"uuid\", data.content[0].uuid);\r","    console.log(data.content[0].uuid);\r","})"],"type":"text/javascript"}}],"id":"1c4f714b-83b9-4f60-85bd-a2bf36681464","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{beneToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_EXPORT"},{"key":"keyword","value":""}]}},"response":[{"id":"bf8652da-f2fb-4451-8c3f-a052add1fc3e","name":"Response_200","originalRequest":{"method":"GET","header":[{"key":"X-CSRF-TOKEN","value":"{{beneToken}}"},{"key":"Accept","value":"*/*"}],"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","loc","alltypes"],"query":[{"key":"size","value":"20"},{"key":"page","value":"1"},{"key":"productAccess","value":"DC_EXPORT"},{"key":"keyword","value":""}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"beneReqAmend","event":[{"listen":"test","script":{"id":"6ee3bb3e-d8a8-4be3-b847-7120cd305448","exec":["pm.test('Ref ID for DC Amm', function(){\r","    const data = pm.response.json();\r","    pm.environment.set(\"uuid\", data.content[0].uuid);\r","    console.log(data.content[0].uuid);\r","})"],"type":"text/javascript"}}],"id":"b04dbc3e-bd1a-420c-8686-a5f3a1eb5078","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{beneToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n   \"args\":{\r\n      \"props\":{\r\n         \"issuedLCRef\":\"Issued DC ref\",\r\n         \"advisedLCRef\":\"123\",\r\n         \"confirmedLCRef\":\"123\",\r\n         \"availableWithLCRef\":\"123\",\r\n         \"applicationDate\":\"2021-04-15\",\r\n         \"formOfDc\":\"IRREVOCABLE\",\r\n         \"applicableRules\":\"EUCP_LATEST_VERSION\",\r\n         \"expiryDate\":\"2022-04-30\",\r\n         \"placePresentation\":\"Updated\",\r\n         \"periodPresentation\":\"456\",\r\n         \"typeOfPresentation\":\"shipment\",\r\n         \"issuerClause\":{\r\n            \"content\":\"Updated\"\r\n         },\r\n         \"amount\":\"32500.00 USD\",\r\n         \"additionalAmountsCovered\":null,\r\n         \"tolerance\":[\r\n            15,\r\n            5\r\n         ],\r\n         \"placeOfFinalDestination\":\"Updated\",\r\n         \"placeOfTakingInCharge\":\"Updated\",\r\n         \"shipmentPeriod\":null,\r\n         \"typeCredit\":null,\r\n         \"typeCredits\":[\r\n            {\r\n               \"typeCredit\":\"SIGHT\",\r\n               \"availableCreditsProps\":{\r\n                  \r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"DEFERRED_PAYMENT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"ACCEPTANCE\",\r\n               \"availableCreditsProps\":{\r\n                  \"draftsAt\":\"Updated\",\r\n                  \"drawee\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n                  \"draweeAddress\":\"Bank B Address\",\r\n                  \"draweeSWIFTBIC\":\"\",\r\n                  \"draweeLegalName\":\"Bank B\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"NEGOTIABLE_CREDIT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            }\r\n         ],\r\n         \"typeCreditsCondition\":\"test\",\r\n         \"draftsAt\":null,\r\n         \"deferredPaymentDetails\":null,\r\n         \"partialShipment\":\"ALLOWED\",\r\n         \"transShipment\":\"NOT_ALLOWED\",\r\n         \"portLoading\":\"Updated\",\r\n         \"portDischarge\":\"Updated\",\r\n         \"lastShipmentDate\":\"2021-09-04\",\r\n         \"goods\":\"Updated\",\r\n         \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n         \"documentsRequired\":[\r\n            {\r\n               \"documentType\":\"INVOICE\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"PACKING_LIST\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"CERTIFICATE_OF_ORIGIN\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"TRANSPORT_DOCUMENT_OTHER\",\r\n               \"subtype\":\"Updated\",\r\n               \"description\":\"Updated\"\r\n            }\r\n         ],\r\n         \"otherDocumentsRequired\":[\r\n            {\r\n               \"documentType\":\"other document 1\",\r\n               \"description\":\"Updated 1\"\r\n            },\r\n            {\r\n               \"documentType\":\"other document 2\",\r\n               \"description\":\"Updated 2\"\r\n            }\r\n         ],\r\n         \"additionalConditions\":\"Updated\",\r\n         \"detailsCharges\":\"Updated\",\r\n         \"confirmation\":\"WITH\",\r\n         \"attachments\":[\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (2).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            },\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (3).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            }\r\n         ],\r\n         \"parties\":{\r\n            \"applicant\":\"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n            \"beneficiary\":\"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n            \"issuer\":\"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"advisingBank\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n            \"confirmingBank\":\"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"availableWithBank\":\"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n            \"availableWithAnyBank\":false,\r\n            \"drawee\":null\r\n         },\r\n         \"partyAddresses\":{\r\n            \"applicant\":\"Corp A Address\",\r\n            \"beneficiary\":\"Corp B Address\",\r\n            \"issuer\":\"Bank A Address\",\r\n            \"advisingBank\":\"Bank B Address\",\r\n            \"confirmingBank\":\"Bank C Address\",\r\n            \"availableWithBank\":\"Bank D Address\",\r\n            \"drawee\":null\r\n         },\r\n         \"membershipSnapshot\":{\r\n            \"snapshotTimestamp\":1618452912439\r\n         }\r\n      }\r\n   },\r\n   \"draftComment\":null\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/beneficiary/proposal/{{uuid}}","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","locamend","beneficiary","proposal","{{uuid}}"]}},"response":[{"id":"9ee74889-365d-442b-b755-6a63cfbf5793","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{beneToken}}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n   \"args\":{\r\n      \"props\":{\r\n         \"issuedLCRef\":\"Issued DC ref\",\r\n         \"advisedLCRef\":\"123\",\r\n         \"confirmedLCRef\":\"123\",\r\n         \"availableWithLCRef\":\"123\",\r\n         \"applicationDate\":\"2021-04-15\",\r\n         \"formOfDc\":\"IRREVOCABLE\",\r\n         \"applicableRules\":\"EUCP_LATEST_VERSION\",\r\n         \"expiryDate\":\"2022-04-30\",\r\n         \"placePresentation\":\"Updated\",\r\n         \"periodPresentation\":\"456\",\r\n         \"typeOfPresentation\":\"shipment\",\r\n         \"issuerClause\":{\r\n            \"content\":\"Updated\"\r\n         },\r\n         \"amount\":\"32500.00 USD\",\r\n         \"additionalAmountsCovered\":null,\r\n         \"tolerance\":[\r\n            15,\r\n            5\r\n         ],\r\n         \"placeOfFinalDestination\":\"Updated\",\r\n         \"placeOfTakingInCharge\":\"Updated\",\r\n         \"shipmentPeriod\":null,\r\n         \"typeCredit\":null,\r\n         \"typeCredits\":[\r\n            {\r\n               \"typeCredit\":\"SIGHT\",\r\n               \"availableCreditsProps\":{\r\n                  \r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"DEFERRED_PAYMENT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"ACCEPTANCE\",\r\n               \"availableCreditsProps\":{\r\n                  \"draftsAt\":\"Updated\",\r\n                  \"drawee\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n                  \"draweeAddress\":\"Bank B Address\",\r\n                  \"draweeSWIFTBIC\":\"\",\r\n                  \"draweeLegalName\":\"Bank B\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"NEGOTIABLE_CREDIT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            }\r\n         ],\r\n         \"typeCreditsCondition\":\"test\",\r\n         \"draftsAt\":null,\r\n         \"deferredPaymentDetails\":null,\r\n         \"partialShipment\":\"ALLOWED\",\r\n         \"transShipment\":\"NOT_ALLOWED\",\r\n         \"portLoading\":\"Updated\",\r\n         \"portDischarge\":\"Updated\",\r\n         \"lastShipmentDate\":\"2021-09-04\",\r\n         \"goods\":\"Updated\",\r\n         \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n         \"documentsRequired\":[\r\n            {\r\n               \"documentType\":\"INVOICE\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"PACKING_LIST\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"CERTIFICATE_OF_ORIGIN\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"TRANSPORT_DOCUMENT_OTHER\",\r\n               \"subtype\":\"Updated\",\r\n               \"description\":\"Updated\"\r\n            }\r\n         ],\r\n         \"otherDocumentsRequired\":[\r\n            {\r\n               \"documentType\":\"other document 1\",\r\n               \"description\":\"Updated 1\"\r\n            },\r\n            {\r\n               \"documentType\":\"other document 2\",\r\n               \"description\":\"Updated 2\"\r\n            }\r\n         ],\r\n         \"additionalConditions\":\"Updated\",\r\n         \"detailsCharges\":\"Updated\",\r\n         \"confirmation\":\"WITH\",\r\n         \"attachments\":[\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (2).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            },\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (3).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            }\r\n         ],\r\n         \"parties\":{\r\n            \"applicant\":\"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n            \"beneficiary\":\"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n            \"issuer\":\"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"advisingBank\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n            \"confirmingBank\":\"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"availableWithBank\":\"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n            \"availableWithAnyBank\":false,\r\n            \"drawee\":null\r\n         },\r\n         \"partyAddresses\":{\r\n            \"applicant\":\"Corp A Address\",\r\n            \"beneficiary\":\"Corp B Address\",\r\n            \"issuer\":\"Bank A Address\",\r\n            \"advisingBank\":\"Bank B Address\",\r\n            \"confirmingBank\":\"Bank C Address\",\r\n            \"availableWithBank\":\"Bank D Address\",\r\n            \"drawee\":null\r\n         },\r\n         \"membershipSnapshot\":{\r\n            \"snapshotTimestamp\":1618452912439\r\n         }\r\n      }\r\n   },\r\n   \"draftComment\":null\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/beneficiary/proposal/{{uuid}}","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","locamend","beneficiary","proposal","{{uuid}}"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"execute","id":"74f0b1c0-4981-4b09-88f2-0bf8e62fdd82","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}","type":"text"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","draft","execute","{{draftDcRef}}"]}},"response":[{"id":"7840d5c7-6594-4399-8c37-b98a243c6572","name":"Response_200","originalRequest":{"method":"POST","header":[{"key":"X-CSRF-TOKEN","value":"{{corpToken}}","type":"text"}],"url":{"raw":"{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}","host":["{{https}}corpa","{{env}}","{{devUrl}}"],"path":["api","v1","draft","execute","{{draftDcRef}}"]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"corpSubmitAmmToIssBank","id":"f648e50e-0f68-4073-ac8f-2909b731f0ad","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.corpToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"issuedLCRef\": \"1234\",\r\n      \"advisedLCRef\": \"123\",\r\n      \"confirmedLCRef\": \"123\",\r\n      \"availableWithLCRef\": \"123\",\r\n      \"applicationDate\": \"2021-04-05\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2021-07-31\",\r\n      \"placePresentation\": \"Updated\",\r\n      \"periodPresentation\": 456,\r\n      \"typeOfPresentation\": \"123\",\r\n      \"issuerClause\": {\r\n        \"content\": null,\r\n        \"attachments\": []\r\n      },\r\n      \"amount\": \"12000.00 USD\",\r\n      \"additionalAmountsCovered\": \"Updated\",\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"Updated\",\r\n      \"placeOfTakingInCharge\": \"Updated\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"Updated\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"Updated\",\r\n            \"drawee\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank A Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank A\"\r\n          }\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": \"Updated\",\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": \"Negotiation / Deferred Payment Details\",\r\n      \"partialShipment\": \"ALLOWED\",\r\n      \"transShipment\": \"NOT_ALLOWED\",\r\n      \"portLoading\": \"Updated\",\r\n      \"portDischarge\": \"Updated\",\r\n      \"lastShipmentDate\": \"2021-05-01\",\r\n      \"goods\": \"Updated\",\r\n      \"instructionsToPayingBank\": \"\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": \"\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"PACKING_LIST\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_OTHER\",\r\n          \"subtype\": \"Updated\",\r\n          \"description\": null\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [],\r\n      \"additionalConditions\": \"Updated\",\r\n      \"detailsCharges\": \"Updated\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": \"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n        \"availableWithAnyBank\": false,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Updated\",\r\n        \"beneficiary\": \"Updated\",\r\n        \"issuer\": \"Updated\",\r\n        \"advisingBank\": \"Updated\",\r\n        \"confirmingBank\": \"Updated\",\r\n        \"availableWithBank\": \"Updated\",\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1617940041929\r\n      }\r\n    }\r\n  }\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/applicant/negotiation/:_.corpIDforAmm/edit/to/issuer","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","locamend","applicant","negotiation",":_.corpIDforAmm","edit","to","issuer"],"variable":[{"id":"0ef4e2b9-b88b-4ed3-a481-7059ad560de4","key":"_.corpIDforAmm","value":"_.corpIDforAmm42"}]}},"response":[{"id":"662b0334-48d7-4083-b593-14e291c4af81","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.corpToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"issuedLCRef\": \"1234\",\r\n      \"advisedLCRef\": \"123\",\r\n      \"confirmedLCRef\": \"123\",\r\n      \"availableWithLCRef\": \"123\",\r\n      \"applicationDate\": \"2021-04-05\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2021-07-31\",\r\n      \"placePresentation\": \"Updated\",\r\n      \"periodPresentation\": 456,\r\n      \"typeOfPresentation\": \"123\",\r\n      \"issuerClause\": {\r\n        \"content\": null,\r\n        \"attachments\": []\r\n      },\r\n      \"amount\": \"12000.00 USD\",\r\n      \"additionalAmountsCovered\": \"Updated\",\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"Updated\",\r\n      \"placeOfTakingInCharge\": \"Updated\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"Updated\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"Updated\",\r\n            \"drawee\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank A Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank A\"\r\n          }\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": \"Updated\",\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": \"Negotiation / Deferred Payment Details\",\r\n      \"partialShipment\": \"ALLOWED\",\r\n      \"transShipment\": \"NOT_ALLOWED\",\r\n      \"portLoading\": \"Updated\",\r\n      \"portDischarge\": \"Updated\",\r\n      \"lastShipmentDate\": \"2021-05-01\",\r\n      \"goods\": \"Updated\",\r\n      \"instructionsToPayingBank\": \"\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": \"\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"PACKING_LIST\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_OTHER\",\r\n          \"subtype\": \"Updated\",\r\n          \"description\": null\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [],\r\n      \"additionalConditions\": \"Updated\",\r\n      \"detailsCharges\": \"Updated\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": \"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n        \"availableWithAnyBank\": false,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Updated\",\r\n        \"beneficiary\": \"Updated\",\r\n        \"issuer\": \"Updated\",\r\n        \"advisingBank\": \"Updated\",\r\n        \"confirmingBank\": \"Updated\",\r\n        \"availableWithBank\": \"Updated\",\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1617940041929\r\n      }\r\n    }\r\n  }\r\n}"},"url":{"raw":"{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/applicant/negotiation/:_.corpIDforAmm/edit/to/issuer","host":["{{https}}corpb","{{env}}","{{devUrl}}"],"path":["api","v1","locamend","applicant","negotiation",":_.corpIDforAmm","edit","to","issuer"],"variable":[{"id":"0ef4e2b9-b88b-4ed3-a481-7059ad560de4","key":"_.corpIDforAmm","value":"_.corpIDforAmm42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"issSubmitAmmtoConfBank","id":"1b542d9e-8888-42eb-9c60-45eca4ca1c84","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.issbankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"timezoneId\": \"+0800\"\r\n  }\r\n}"},"url":{"raw":"{{Server 3}}/api/v1/locamend/bank/endorsement/:_.issIDforAmm/accept","host":["{{Server 3}}"],"path":["api","v1","locamend","bank","endorsement",":_.issIDforAmm","accept"],"variable":[{"id":"8a9878cf-27ec-47d9-983b-d0b561c88e5a","key":"_.issIDforAmm","value":"_.issIDforAmm42"}]}},"response":[{"id":"600f0f00-0185-4fe7-b58c-a420c0bf4945","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.issbankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"timezoneId\": \"+0800\"\r\n  }\r\n}"},"url":{"raw":"{{Server 3}}/api/v1/locamend/bank/endorsement/:_.issIDforAmm/accept","host":["{{Server 3}}"],"path":["api","v1","locamend","bank","endorsement",":_.issIDforAmm","accept"],"variable":[{"id":"8a9878cf-27ec-47d9-983b-d0b561c88e5a","key":"_.issIDforAmm","value":"_.issIDforAmm42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"confSubmitAmmtoNomBank","id":"d4de9e79-95c1-4bca-b8ca-e3ce9e23af68","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.confBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"withConfirmation\": true\r\n  }\r\n}"},"url":{"raw":"{{Server 4}}/api/v1/locamend/bank/endorsement/:_.confIDforAmm/accept","host":["{{Server 4}}"],"path":["api","v1","locamend","bank","endorsement",":_.confIDforAmm","accept"],"variable":[{"id":"9ca103b8-da81-414a-b1ad-f500f3ec733c","key":"_.confIDforAmm","value":"_.confIDforAmm42"}]}},"response":[{"id":"ac8cd7ca-0d4c-4577-a56e-63ed42465589","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.confBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {\r\n    \"withConfirmation\": true\r\n  }\r\n}"},"url":{"raw":"{{Server 4}}/api/v1/locamend/bank/endorsement/:_.confIDforAmm/accept","host":["{{Server 4}}"],"path":["api","v1","locamend","bank","endorsement",":_.confIDforAmm","accept"],"variable":[{"id":"9ca103b8-da81-414a-b1ad-f500f3ec733c","key":"_.confIDforAmm","value":"_.confIDforAmm42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"nomSubmitAmmtoAdvBank","id":"fdb0af11-2093-4b34-b753-75512b5fe201","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.nomBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 5}}/api/v1/locamend/bank/endorsement/:_.nomIDforAmm/accept","host":["{{Server 5}}"],"path":["api","v1","locamend","bank","endorsement",":_.nomIDforAmm","accept"],"variable":[{"id":"36286264-fc72-41cf-b754-a65298d6a631","key":"_.nomIDforAmm","value":"_.nomIDforAmm42"}]}},"response":[{"id":"7e12382e-6076-453b-bd03-c69e7c5dea20","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.nomBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 5}}/api/v1/locamend/bank/endorsement/:_.nomIDforAmm/accept","host":["{{Server 5}}"],"path":["api","v1","locamend","bank","endorsement",":_.nomIDforAmm","accept"],"variable":[{"id":"36286264-fc72-41cf-b754-a65298d6a631","key":"_.nomIDforAmm","value":"_.nomIDforAmm42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"advSubmitAmmToBene","id":"55c1471b-df55-4bbe-b96b-bb15e5b10be7","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.advBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 6}}/api/v1/locamend/bank/endorsement/:_.advIDforAmm/accept","host":["{{Server 6}}"],"path":["api","v1","locamend","bank","endorsement",":_.advIDforAmm","accept"],"variable":[{"id":"dd1ede23-cd51-4029-8001-6251866a48ac","key":"_.advIDforAmm","value":"_.advIDforAmm42"}]}},"response":[{"id":"2eae78b2-4419-49b1-8a07-a791af898e49","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"Content-Type","value":"application/json"},{"key":"X-CSRF-TOKEN","value":"{{ _.advBankToken }}"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 6}}/api/v1/locamend/bank/endorsement/:_.advIDforAmm/accept","host":["{{Server 6}}"],"path":["api","v1","locamend","bank","endorsement",":_.advIDforAmm","accept"],"variable":[{"id":"dd1ede23-cd51-4029-8001-6251866a48ac","key":"_.advIDforAmm","value":"_.advIDforAmm42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]},{"name":"beneAcceptAmm","id":"d8cdd2ff-97e9-450a-867d-e95c42a3e757","protocolProfileBehavior":{"disableBodyPruning":true},"request":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{ _.beneficiaryToken }}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 2}}/api/v1/locamend/beneficiary/conclusion/:_.benIDforAccept/accept","host":["{{Server 2}}"],"path":["api","v1","locamend","beneficiary","conclusion",":_.benIDforAccept","accept"],"variable":[{"id":"0cff45df-f129-4ebf-881e-444c7ab6a8b7","key":"_.benIDforAccept","value":"_.benIDforAccept42"}]}},"response":[{"id":"2eefb20c-7dd3-4fa6-8f85-fd424146c855","name":"Response_200","originalRequest":{"method":"PUT","header":[{"key":"X-CSRF-TOKEN","value":"{{ _.beneficiaryToken }}"},{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}],"body":{"mode":"raw","raw":"{\r\n  \"args\": {}\r\n}"},"url":{"raw":"{{Server 2}}/api/v1/locamend/beneficiary/conclusion/:_.benIDforAccept/accept","host":["{{Server 2}}"],"path":["api","v1","locamend","beneficiary","conclusion",":_.benIDforAccept","accept"],"variable":[{"id":"0cff45df-f129-4ebf-881e-444c7ab6a8b7","key":"_.benIDforAccept","value":"_.benIDforAccept42"}]}},"code":200,"_postman_previewlanguage":"Text","header":[],"cookie":[],"responseTime":null,"body":""}]}]}}
+{
+  "collection": {
+    "info": {
+      "_postman_id": "31694560-0cfb-49e6-b4b0-e019d7dbd7fd",
+      "name": "Bene Amend DC",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "loginBene",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "478929d5-3fe4-45a4-8172-9e0e616cc4b5",
+              "exec": [
+                "pm.test('set nom token', function(){\r",
+                "    const token = pm.response.headers.get(\"X-CSRF-TOKEN\");\r",
+                "    pm.environment.set(\"beneToken\", token);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "cb2a0d86-9e86-4f4d-8f23-5e062c2128c9",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}corpb.{{env}}.{{devUrl}}/login",
+            "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+            "path": ["login"],
+            "query": [
+              { "key": "", "value": "", "disabled": true },
+              { "key": "", "value": "", "disabled": true }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "bb2d1ab3-857f-4673-9952-14f820ebe5af",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"username\": \"contour-user\",\r\n  \"password\": \"password\"\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}corpb.{{env}}.{{devUrl}}/login",
+                "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+                "path": ["login"],
+                "query": [
+                  { "key": "", "value": "", "disabled": true },
+                  { "key": "", "value": "", "disabled": true }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "retrieveDCBeneficiary",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "39affdba-b2f3-40af-b917-2b7e83557885",
+              "exec": [
+                "pm.test('get dc uuid', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"uuid\", data.content[0].uuid);\r",
+                "    console.log(data.content[0].uuid);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "1c4f714b-83b9-4f60-85bd-a2bf36681464",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "GET",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{beneToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "url": {
+            "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=",
+            "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "loc", "alltypes"],
+            "query": [
+              { "key": "size", "value": "20" },
+              { "key": "page", "value": "1" },
+              { "key": "productAccess", "value": "DC_EXPORT" },
+              { "key": "keyword", "value": "" }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "bf8652da-f2fb-4451-8c3f-a052add1fc3e",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "GET",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{beneToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "url": {
+                "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/loc/alltypes?size=20&page=1&productAccess=DC_EXPORT&keyword=",
+                "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "loc", "alltypes"],
+                "query": [
+                  { "key": "size", "value": "20" },
+                  { "key": "page", "value": "1" },
+                  { "key": "productAccess", "value": "DC_EXPORT" },
+                  { "key": "keyword", "value": "" }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "beneReqAmend",
+        "event": [
+          {
+            "listen": "test",
+            "script": {
+              "id": "6ee3bb3e-d8a8-4be3-b847-7120cd305448",
+              "exec": [
+                "pm.test('Ref ID for DC Amm', function(){\r",
+                "    const data = pm.response.json();\r",
+                "    pm.environment.set(\"uuid\", data.content[0].uuid);\r",
+                "    console.log(data.content[0].uuid);\r",
+                "})"
+              ],
+              "type": "text/javascript"
+            }
+          }
+        ],
+        "id": "b04dbc3e-bd1a-420c-8686-a5f3a1eb5078",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{beneToken}}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n   \"args\":{\r\n      \"props\":{\r\n         \"issuedLCRef\":\"Issued DC ref\",\r\n         \"advisedLCRef\":\"123\",\r\n         \"confirmedLCRef\":\"123\",\r\n         \"availableWithLCRef\":\"123\",\r\n         \"applicationDate\":\"2021-04-15\",\r\n         \"formOfDc\":\"IRREVOCABLE\",\r\n         \"applicableRules\":\"EUCP_LATEST_VERSION\",\r\n         \"expiryDate\":\"2022-04-30\",\r\n         \"placePresentation\":\"Updated\",\r\n         \"periodPresentation\":\"456\",\r\n         \"typeOfPresentation\":\"shipment\",\r\n         \"issuerClause\":{\r\n            \"content\":\"Updated\"\r\n         },\r\n         \"amount\":\"32500.00 USD\",\r\n         \"additionalAmountsCovered\":null,\r\n         \"tolerance\":[\r\n            15,\r\n            5\r\n         ],\r\n         \"placeOfFinalDestination\":\"Updated\",\r\n         \"placeOfTakingInCharge\":\"Updated\",\r\n         \"shipmentPeriod\":null,\r\n         \"typeCredit\":null,\r\n         \"typeCredits\":[\r\n            {\r\n               \"typeCredit\":\"SIGHT\",\r\n               \"availableCreditsProps\":{\r\n                  \r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"DEFERRED_PAYMENT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"ACCEPTANCE\",\r\n               \"availableCreditsProps\":{\r\n                  \"draftsAt\":\"Updated\",\r\n                  \"drawee\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n                  \"draweeAddress\":\"Bank B Address\",\r\n                  \"draweeSWIFTBIC\":\"\",\r\n                  \"draweeLegalName\":\"Bank B\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"NEGOTIABLE_CREDIT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            }\r\n         ],\r\n         \"typeCreditsCondition\":\"test\",\r\n         \"draftsAt\":null,\r\n         \"deferredPaymentDetails\":null,\r\n         \"partialShipment\":\"ALLOWED\",\r\n         \"transShipment\":\"NOT_ALLOWED\",\r\n         \"portLoading\":\"Updated\",\r\n         \"portDischarge\":\"Updated\",\r\n         \"lastShipmentDate\":\"2021-09-04\",\r\n         \"goods\":\"Updated\",\r\n         \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n         \"documentsRequired\":[\r\n            {\r\n               \"documentType\":\"INVOICE\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"PACKING_LIST\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"CERTIFICATE_OF_ORIGIN\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"TRANSPORT_DOCUMENT_OTHER\",\r\n               \"subtype\":\"Updated\",\r\n               \"description\":\"Updated\"\r\n            }\r\n         ],\r\n         \"otherDocumentsRequired\":[\r\n            {\r\n               \"documentType\":\"other document 1\",\r\n               \"description\":\"Updated 1\"\r\n            },\r\n            {\r\n               \"documentType\":\"other document 2\",\r\n               \"description\":\"Updated 2\"\r\n            }\r\n         ],\r\n         \"additionalConditions\":\"Updated\",\r\n         \"detailsCharges\":\"Updated\",\r\n         \"confirmation\":\"WITH\",\r\n         \"attachments\":[\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (2).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            },\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (3).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            }\r\n         ],\r\n         \"parties\":{\r\n            \"applicant\":\"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n            \"beneficiary\":\"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n            \"issuer\":\"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"advisingBank\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n            \"confirmingBank\":\"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"availableWithBank\":\"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n            \"availableWithAnyBank\":false,\r\n            \"drawee\":null\r\n         },\r\n         \"partyAddresses\":{\r\n            \"applicant\":\"Corp A Address\",\r\n            \"beneficiary\":\"Corp B Address\",\r\n            \"issuer\":\"Bank A Address\",\r\n            \"advisingBank\":\"Bank B Address\",\r\n            \"confirmingBank\":\"Bank C Address\",\r\n            \"availableWithBank\":\"Bank D Address\",\r\n            \"drawee\":null\r\n         },\r\n         \"membershipSnapshot\":{\r\n            \"snapshotTimestamp\":1618452912439\r\n         }\r\n      }\r\n   },\r\n   \"draftComment\":null\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/beneficiary/proposal/{{uuid}}",
+            "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "beneficiary",
+              "proposal",
+              "{{uuid}}"
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "9ee74889-365d-442b-b755-6a63cfbf5793",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{beneToken}}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n   \"args\":{\r\n      \"props\":{\r\n         \"issuedLCRef\":\"Issued DC ref\",\r\n         \"advisedLCRef\":\"123\",\r\n         \"confirmedLCRef\":\"123\",\r\n         \"availableWithLCRef\":\"123\",\r\n         \"applicationDate\":\"2021-04-15\",\r\n         \"formOfDc\":\"IRREVOCABLE\",\r\n         \"applicableRules\":\"EUCP_LATEST_VERSION\",\r\n         \"expiryDate\":\"2022-04-30\",\r\n         \"placePresentation\":\"Updated\",\r\n         \"periodPresentation\":\"456\",\r\n         \"typeOfPresentation\":\"shipment\",\r\n         \"issuerClause\":{\r\n            \"content\":\"Updated\"\r\n         },\r\n         \"amount\":\"32500.00 USD\",\r\n         \"additionalAmountsCovered\":null,\r\n         \"tolerance\":[\r\n            15,\r\n            5\r\n         ],\r\n         \"placeOfFinalDestination\":\"Updated\",\r\n         \"placeOfTakingInCharge\":\"Updated\",\r\n         \"shipmentPeriod\":null,\r\n         \"typeCredit\":null,\r\n         \"typeCredits\":[\r\n            {\r\n               \"typeCredit\":\"SIGHT\",\r\n               \"availableCreditsProps\":{\r\n                  \r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"DEFERRED_PAYMENT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"ACCEPTANCE\",\r\n               \"availableCreditsProps\":{\r\n                  \"draftsAt\":\"Updated\",\r\n                  \"drawee\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n                  \"draweeAddress\":\"Bank B Address\",\r\n                  \"draweeSWIFTBIC\":\"\",\r\n                  \"draweeLegalName\":\"Bank B\"\r\n               }\r\n            },\r\n            {\r\n               \"typeCredit\":\"NEGOTIABLE_CREDIT\",\r\n               \"availableCreditsProps\":{\r\n                  \"deferredPaymentDetails\":\"Updated\"\r\n               }\r\n            }\r\n         ],\r\n         \"typeCreditsCondition\":\"test\",\r\n         \"draftsAt\":null,\r\n         \"deferredPaymentDetails\":null,\r\n         \"partialShipment\":\"ALLOWED\",\r\n         \"transShipment\":\"NOT_ALLOWED\",\r\n         \"portLoading\":\"Updated\",\r\n         \"portDischarge\":\"Updated\",\r\n         \"lastShipmentDate\":\"2021-09-04\",\r\n         \"goods\":\"Updated\",\r\n         \"instructionsToPayingBank\":\"Instructions to Paying / Accepting / Negotiating Bank (optional)\",\r\n         \"documentsRequired\":[\r\n            {\r\n               \"documentType\":\"INVOICE\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"PACKING_LIST\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"CERTIFICATE_OF_ORIGIN\",\r\n               \"description\":\"Updated\",\r\n               \"subtype\":null\r\n            },\r\n            {\r\n               \"documentType\":\"TRANSPORT_DOCUMENT_OTHER\",\r\n               \"subtype\":\"Updated\",\r\n               \"description\":\"Updated\"\r\n            }\r\n         ],\r\n         \"otherDocumentsRequired\":[\r\n            {\r\n               \"documentType\":\"other document 1\",\r\n               \"description\":\"Updated 1\"\r\n            },\r\n            {\r\n               \"documentType\":\"other document 2\",\r\n               \"description\":\"Updated 2\"\r\n            }\r\n         ],\r\n         \"additionalConditions\":\"Updated\",\r\n         \"detailsCharges\":\"Updated\",\r\n         \"confirmation\":\"WITH\",\r\n         \"attachments\":[\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (2).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            },\r\n            {\r\n               \"name\":\"Doc1_1MB - Copy - Copy (3).pdf\",\r\n               \"id\":\"E2216F1447B8FB344A3505B6A14687A0A9B8E920237AAFE5CF05A68B0CE5A31F\"\r\n            }\r\n         ],\r\n         \"parties\":{\r\n            \"applicant\":\"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n            \"beneficiary\":\"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n            \"issuer\":\"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"advisingBank\":\"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n            \"confirmingBank\":\"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n            \"availableWithBank\":\"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n            \"availableWithAnyBank\":false,\r\n            \"drawee\":null\r\n         },\r\n         \"partyAddresses\":{\r\n            \"applicant\":\"Corp A Address\",\r\n            \"beneficiary\":\"Corp B Address\",\r\n            \"issuer\":\"Bank A Address\",\r\n            \"advisingBank\":\"Bank B Address\",\r\n            \"confirmingBank\":\"Bank C Address\",\r\n            \"availableWithBank\":\"Bank D Address\",\r\n            \"drawee\":null\r\n         },\r\n         \"membershipSnapshot\":{\r\n            \"snapshotTimestamp\":1618452912439\r\n         }\r\n      }\r\n   },\r\n   \"draftComment\":null\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/beneficiary/proposal/{{uuid}}",
+                "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "beneficiary",
+                  "proposal",
+                  "{{uuid}}"
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "execute",
+        "id": "74f0b1c0-4981-4b09-88f2-0bf8e62fdd82",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{corpToken}}", "type": "text" }
+          ],
+          "url": {
+            "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}",
+            "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+            "path": ["api", "v1", "draft", "execute", "{{draftDcRef}}"]
+          }
+        },
+        "response": [
+          {
+            "id": "7840d5c7-6594-4399-8c37-b98a243c6572",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "X-CSRF-TOKEN",
+                  "value": "{{corpToken}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{https}}corpa.{{env}}.{{devUrl}}/api/v1/draft/execute/{{draftDcRef}}",
+                "host": ["{{https}}corpa", "{{env}}", "{{devUrl}}"],
+                "path": ["api", "v1", "draft", "execute", "{{draftDcRef}}"]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "corpSubmitAmmToIssBank",
+        "id": "f648e50e-0f68-4073-ac8f-2909b731f0ad",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.corpToken }}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"issuedLCRef\": \"1234\",\r\n      \"advisedLCRef\": \"123\",\r\n      \"confirmedLCRef\": \"123\",\r\n      \"availableWithLCRef\": \"123\",\r\n      \"applicationDate\": \"2021-04-05\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2021-07-31\",\r\n      \"placePresentation\": \"Updated\",\r\n      \"periodPresentation\": 456,\r\n      \"typeOfPresentation\": \"123\",\r\n      \"issuerClause\": {\r\n        \"content\": null,\r\n        \"attachments\": []\r\n      },\r\n      \"amount\": \"12000.00 USD\",\r\n      \"additionalAmountsCovered\": \"Updated\",\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"Updated\",\r\n      \"placeOfTakingInCharge\": \"Updated\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"Updated\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"Updated\",\r\n            \"drawee\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank A Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank A\"\r\n          }\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": \"Updated\",\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": \"Negotiation / Deferred Payment Details\",\r\n      \"partialShipment\": \"ALLOWED\",\r\n      \"transShipment\": \"NOT_ALLOWED\",\r\n      \"portLoading\": \"Updated\",\r\n      \"portDischarge\": \"Updated\",\r\n      \"lastShipmentDate\": \"2021-05-01\",\r\n      \"goods\": \"Updated\",\r\n      \"instructionsToPayingBank\": \"\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": \"\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"PACKING_LIST\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_OTHER\",\r\n          \"subtype\": \"Updated\",\r\n          \"description\": null\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [],\r\n      \"additionalConditions\": \"Updated\",\r\n      \"detailsCharges\": \"Updated\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": \"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n        \"availableWithAnyBank\": false,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Updated\",\r\n        \"beneficiary\": \"Updated\",\r\n        \"issuer\": \"Updated\",\r\n        \"advisingBank\": \"Updated\",\r\n        \"confirmingBank\": \"Updated\",\r\n        \"availableWithBank\": \"Updated\",\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1617940041929\r\n      }\r\n    }\r\n  }\r\n}"
+          },
+          "url": {
+            "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/applicant/negotiation/:_.corpIDforAmm/edit/to/issuer",
+            "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "applicant",
+              "negotiation",
+              ":_.corpIDforAmm",
+              "edit",
+              "to",
+              "issuer"
+            ],
+            "variable": [
+              {
+                "id": "0ef4e2b9-b88b-4ed3-a481-7059ad560de4",
+                "key": "_.corpIDforAmm",
+                "value": "_.corpIDforAmm42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "662b0334-48d7-4083-b593-14e291c4af81",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.corpToken }}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"props\": {\r\n      \"issuedLCRef\": \"1234\",\r\n      \"advisedLCRef\": \"123\",\r\n      \"confirmedLCRef\": \"123\",\r\n      \"availableWithLCRef\": \"123\",\r\n      \"applicationDate\": \"2021-04-05\",\r\n      \"formOfDc\": \"IRREVOCABLE\",\r\n      \"applicableRules\": \"EUCP_LATEST_VERSION\",\r\n      \"expiryDate\": \"2021-07-31\",\r\n      \"placePresentation\": \"Updated\",\r\n      \"periodPresentation\": 456,\r\n      \"typeOfPresentation\": \"123\",\r\n      \"issuerClause\": {\r\n        \"content\": null,\r\n        \"attachments\": []\r\n      },\r\n      \"amount\": \"12000.00 USD\",\r\n      \"additionalAmountsCovered\": \"Updated\",\r\n      \"tolerance\": [\r\n        15,\r\n        5\r\n      ],\r\n      \"placeOfFinalDestination\": \"Updated\",\r\n      \"placeOfTakingInCharge\": \"Updated\",\r\n      \"shipmentPeriod\": null,\r\n      \"typeCredit\": null,\r\n      \"typeCredits\": [\r\n        {\r\n          \"typeCredit\": \"NEGOTIABLE_CREDIT\",\r\n          \"availableCreditsProps\": {\r\n            \"deferredPaymentDetails\": \"Updated\"\r\n          }\r\n        },\r\n        {\r\n          \"typeCredit\": \"ACCEPTANCE\",\r\n          \"availableCreditsProps\": {\r\n            \"draftsAt\": \"Updated\",\r\n            \"drawee\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n            \"draweeAddress\": \"Bank A Address\",\r\n            \"draweeSWIFTBIC\": \"\",\r\n            \"draweeLegalName\": \"Bank A\"\r\n          }\r\n        }\r\n      ],\r\n      \"typeCreditsCondition\": \"Updated\",\r\n      \"draftsAt\": null,\r\n      \"deferredPaymentDetails\": \"Negotiation / Deferred Payment Details\",\r\n      \"partialShipment\": \"ALLOWED\",\r\n      \"transShipment\": \"NOT_ALLOWED\",\r\n      \"portLoading\": \"Updated\",\r\n      \"portDischarge\": \"Updated\",\r\n      \"lastShipmentDate\": \"2021-05-01\",\r\n      \"goods\": \"Updated\",\r\n      \"instructionsToPayingBank\": \"\",\r\n      \"documentsRequired\": [\r\n        {\r\n          \"documentType\": \"INVOICE\",\r\n          \"description\": \"\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"CERTIFICATE_OF_ORIGIN\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"PACKING_LIST\",\r\n          \"description\": \"Updated\",\r\n          \"subtype\": null\r\n        },\r\n        {\r\n          \"documentType\": \"TRANSPORT_DOCUMENT_OTHER\",\r\n          \"subtype\": \"Updated\",\r\n          \"description\": null\r\n        }\r\n      ],\r\n      \"otherDocumentsRequired\": [],\r\n      \"additionalConditions\": \"Updated\",\r\n      \"detailsCharges\": \"Updated\",\r\n      \"confirmation\": \"WITH\",\r\n      \"attachments\": [],\r\n      \"parties\": {\r\n        \"applicant\": \"OU=Corp A, O=Contour - Corp A, L=Singapore, C=SG\",\r\n        \"beneficiary\": \"OU=Corp B, O=Contour - Corp B, L=Singapore, C=SG\",\r\n        \"issuer\": \"OU=Bank A, O=Contour - Bank A, L=Singapore, C=SG\",\r\n        \"advisingBank\": \"OU=Bank B, O=Contour - Bank B, L=Singapore, C=SG\",\r\n        \"confirmingBank\": \"OU=Bank C, O=Contour - Bank C, L=Singapore, C=SG\",\r\n        \"availableWithBank\": \"OU=Bank D, O=Contour - Bank D, L=Singapore, C=SG\",\r\n        \"availableWithAnyBank\": false,\r\n        \"drawee\": null\r\n      },\r\n      \"partyAddresses\": {\r\n        \"applicant\": \"Updated\",\r\n        \"beneficiary\": \"Updated\",\r\n        \"issuer\": \"Updated\",\r\n        \"advisingBank\": \"Updated\",\r\n        \"confirmingBank\": \"Updated\",\r\n        \"availableWithBank\": \"Updated\",\r\n        \"drawee\": null\r\n      },\r\n      \"membershipSnapshot\": {\r\n        \"snapshotTimestamp\": 1617940041929\r\n      }\r\n    }\r\n  }\r\n}"
+              },
+              "url": {
+                "raw": "{{https}}corpb.{{env}}.{{devUrl}}/api/v1/locamend/applicant/negotiation/:_.corpIDforAmm/edit/to/issuer",
+                "host": ["{{https}}corpb", "{{env}}", "{{devUrl}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "applicant",
+                  "negotiation",
+                  ":_.corpIDforAmm",
+                  "edit",
+                  "to",
+                  "issuer"
+                ],
+                "variable": [
+                  {
+                    "id": "0ef4e2b9-b88b-4ed3-a481-7059ad560de4",
+                    "key": "_.corpIDforAmm",
+                    "value": "_.corpIDforAmm42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "issSubmitAmmtoConfBank",
+        "id": "1b542d9e-8888-42eb-9c60-45eca4ca1c84",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.issbankToken }}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"timezoneId\": \"+0800\"\r\n  }\r\n}"
+          },
+          "url": {
+            "raw": "{{Server 3}}/api/v1/locamend/bank/endorsement/:_.issIDforAmm/accept",
+            "host": ["{{Server 3}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "bank",
+              "endorsement",
+              ":_.issIDforAmm",
+              "accept"
+            ],
+            "variable": [
+              {
+                "id": "8a9878cf-27ec-47d9-983b-d0b561c88e5a",
+                "key": "_.issIDforAmm",
+                "value": "_.issIDforAmm42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "600f0f00-0185-4fe7-b58c-a420c0bf4945",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.issbankToken }}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"timezoneId\": \"+0800\"\r\n  }\r\n}"
+              },
+              "url": {
+                "raw": "{{Server 3}}/api/v1/locamend/bank/endorsement/:_.issIDforAmm/accept",
+                "host": ["{{Server 3}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "bank",
+                  "endorsement",
+                  ":_.issIDforAmm",
+                  "accept"
+                ],
+                "variable": [
+                  {
+                    "id": "8a9878cf-27ec-47d9-983b-d0b561c88e5a",
+                    "key": "_.issIDforAmm",
+                    "value": "_.issIDforAmm42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "confSubmitAmmtoNomBank",
+        "id": "d4de9e79-95c1-4bca-b8ca-e3ce9e23af68",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.confBankToken }}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\r\n  \"args\": {\r\n    \"withConfirmation\": true\r\n  }\r\n}"
+          },
+          "url": {
+            "raw": "{{Server 4}}/api/v1/locamend/bank/endorsement/:_.confIDforAmm/accept",
+            "host": ["{{Server 4}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "bank",
+              "endorsement",
+              ":_.confIDforAmm",
+              "accept"
+            ],
+            "variable": [
+              {
+                "id": "9ca103b8-da81-414a-b1ad-f500f3ec733c",
+                "key": "_.confIDforAmm",
+                "value": "_.confIDforAmm42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "ac8cd7ca-0d4c-4577-a56e-63ed42465589",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.confBankToken }}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"args\": {\r\n    \"withConfirmation\": true\r\n  }\r\n}"
+              },
+              "url": {
+                "raw": "{{Server 4}}/api/v1/locamend/bank/endorsement/:_.confIDforAmm/accept",
+                "host": ["{{Server 4}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "bank",
+                  "endorsement",
+                  ":_.confIDforAmm",
+                  "accept"
+                ],
+                "variable": [
+                  {
+                    "id": "9ca103b8-da81-414a-b1ad-f500f3ec733c",
+                    "key": "_.confIDforAmm",
+                    "value": "_.confIDforAmm42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "nomSubmitAmmtoAdvBank",
+        "id": "fdb0af11-2093-4b34-b753-75512b5fe201",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.nomBankToken }}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+          "url": {
+            "raw": "{{Server 5}}/api/v1/locamend/bank/endorsement/:_.nomIDforAmm/accept",
+            "host": ["{{Server 5}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "bank",
+              "endorsement",
+              ":_.nomIDforAmm",
+              "accept"
+            ],
+            "variable": [
+              {
+                "id": "36286264-fc72-41cf-b754-a65298d6a631",
+                "key": "_.nomIDforAmm",
+                "value": "_.nomIDforAmm42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "7e12382e-6076-453b-bd03-c69e7c5dea20",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.nomBankToken }}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+              "url": {
+                "raw": "{{Server 5}}/api/v1/locamend/bank/endorsement/:_.nomIDforAmm/accept",
+                "host": ["{{Server 5}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "bank",
+                  "endorsement",
+                  ":_.nomIDforAmm",
+                  "accept"
+                ],
+                "variable": [
+                  {
+                    "id": "36286264-fc72-41cf-b754-a65298d6a631",
+                    "key": "_.nomIDforAmm",
+                    "value": "_.nomIDforAmm42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "advSubmitAmmToBene",
+        "id": "55c1471b-df55-4bbe-b96b-bb15e5b10be7",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.advBankToken }}" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+          "url": {
+            "raw": "{{Server 6}}/api/v1/locamend/bank/endorsement/:_.advIDforAmm/accept",
+            "host": ["{{Server 6}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "bank",
+              "endorsement",
+              ":_.advIDforAmm",
+              "accept"
+            ],
+            "variable": [
+              {
+                "id": "dd1ede23-cd51-4029-8001-6251866a48ac",
+                "key": "_.advIDforAmm",
+                "value": "_.advIDforAmm42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "2eae78b2-4419-49b1-8a07-a791af898e49",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.advBankToken }}" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+              "url": {
+                "raw": "{{Server 6}}/api/v1/locamend/bank/endorsement/:_.advIDforAmm/accept",
+                "host": ["{{Server 6}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "bank",
+                  "endorsement",
+                  ":_.advIDforAmm",
+                  "accept"
+                ],
+                "variable": [
+                  {
+                    "id": "dd1ede23-cd51-4029-8001-6251866a48ac",
+                    "key": "_.advIDforAmm",
+                    "value": "_.advIDforAmm42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      },
+      {
+        "name": "beneAcceptAmm",
+        "id": "d8cdd2ff-97e9-450a-867d-e95c42a3e757",
+        "protocolProfileBehavior": { "disableBodyPruning": true },
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "X-CSRF-TOKEN", "value": "{{ _.beneficiaryToken }}" },
+            { "key": "Content-Type", "value": "application/json" },
+            { "key": "Accept", "value": "*/*" }
+          ],
+          "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+          "url": {
+            "raw": "{{Server 2}}/api/v1/locamend/beneficiary/conclusion/:_.benIDforAccept/accept",
+            "host": ["{{Server 2}}"],
+            "path": [
+              "api",
+              "v1",
+              "locamend",
+              "beneficiary",
+              "conclusion",
+              ":_.benIDforAccept",
+              "accept"
+            ],
+            "variable": [
+              {
+                "id": "0cff45df-f129-4ebf-881e-444c7ab6a8b7",
+                "key": "_.benIDforAccept",
+                "value": "_.benIDforAccept42"
+              }
+            ]
+          }
+        },
+        "response": [
+          {
+            "id": "2eefb20c-7dd3-4fa6-8f85-fd424146c855",
+            "name": "Response_200",
+            "originalRequest": {
+              "method": "PUT",
+              "header": [
+                { "key": "X-CSRF-TOKEN", "value": "{{ _.beneficiaryToken }}" },
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Accept", "value": "*/*" }
+              ],
+              "body": { "mode": "raw", "raw": "{\r\n  \"args\": {}\r\n}" },
+              "url": {
+                "raw": "{{Server 2}}/api/v1/locamend/beneficiary/conclusion/:_.benIDforAccept/accept",
+                "host": ["{{Server 2}}"],
+                "path": [
+                  "api",
+                  "v1",
+                  "locamend",
+                  "beneficiary",
+                  "conclusion",
+                  ":_.benIDforAccept",
+                  "accept"
+                ],
+                "variable": [
+                  {
+                    "id": "0cff45df-f129-4ebf-881e-444c7ab6a8b7",
+                    "key": "_.benIDforAccept",
+                    "value": "_.benIDforAccept42"
+                  }
+                ]
+              }
+            },
+            "code": 200,
+            "_postman_previewlanguage": "Text",
+            "header": [],
+            "cookie": [],
+            "responseTime": null,
+            "body": ""
+          }
+        ]
+      }
+    ]
+  }
+}
